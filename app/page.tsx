@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import { Gamepad2, BookOpen, Rocket, Gem } from 'lucide-react'
-import Hero from '@/components/Hero'
+import ShroomwoodHero from '@/components/ShroomwoodHero'
 import Games from '@/components/Games'
 import WhoWeAre from '@/components/WhoWeAre'
 import WhatWeDo from '@/components/WhatWeDo'
@@ -40,7 +40,7 @@ export default function Home() {
   }, [])
   return (
     <main>
-      <Hero />
+      <ShroomwoodHero />
       <SectionBreak />
       
       {/* Preview Sections */}
