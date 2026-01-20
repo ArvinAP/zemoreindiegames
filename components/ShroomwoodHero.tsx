@@ -125,7 +125,7 @@ export default function ShroomwoodHero() {
   const active = slides[activeIndex]
 
   return (
-    <section className="relative overflow-hidden px-6 pt-28 md:pt-32 pb-20 h-[90vh] flex items-center">
+    <section className="relative overflow-hidden px-6 pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-20 h-[90vh] flex items-start md:items-center">
       <div className="absolute inset-0 pointer-events-none">
         <img
           src={active.backgroundImage}
@@ -157,7 +157,7 @@ export default function ShroomwoodHero() {
           className="grid gap-12 items-center grid-cols-1"
         >
           <div className="text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 text-xs uppercase tracking-[0.3em] text-white/80">
+            <div className="inline-flex items-center gap-2 px-4 py-2 mt-4 sm:mt-0 rounded-full bg-white/10 border border-white/10 text-xs uppercase tracking-[0.3em] text-white/80">
               Featured Game
             </div>
 

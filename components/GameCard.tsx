@@ -11,9 +11,9 @@ interface GameCardProps {
 
 export default function GameCard({ title, description, image, gradient, developer, link }: GameCardProps) {
   const CardContent = (
-    <div className="group relative cursor-pointer">
-      <div className="card-surface rounded-3xl overflow-hidden">
-        <div className={`relative aspect-[4/2.2] bg-gradient-to-br ${gradient}`}>
+    <div className="group relative cursor-pointer h-full">
+      <div className="card-surface rounded-3xl overflow-hidden h-full flex flex-col">
+        <div className={`relative aspect-[4/2.2] bg-gradient-to-br ${gradient} flex-shrink-0`}>
           <img
             src={image}
             alt={title}
@@ -33,7 +33,7 @@ export default function GameCard({ title, description, image, gradient, develope
           </div>
         </div>
 
-        <div className="p-6 space-y-5">
+        <div className="p-6 space-y-5 flex-grow flex flex-col justify-center">
           <p className="text-sm text-white/70 leading-relaxed">
             {description}
           </p>
@@ -44,11 +44,11 @@ export default function GameCard({ title, description, image, gradient, develope
 
   if (link) {
     return (
-      <a href={link} target="_blank" rel="noopener noreferrer" className="block">
+      <a href={link} target="_blank" rel="noopener noreferrer" className="block h-full">
         {CardContent}
       </a>
     )
   }
 
-  return CardContent
+  return <div className="h-full">{CardContent}</div>
 }

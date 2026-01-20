@@ -33,9 +33,11 @@ export default function Games() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
           {games.map((game) => (
-            <GameCard key={game.id} {...game} />
+            <div key={game.id} className="h-full min-h-[320px] flex">
+              <GameCard {...game} />
+            </div>
           ))}
         </div>
       </div>
