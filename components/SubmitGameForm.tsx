@@ -116,14 +116,14 @@ export default function SubmitGameForm() {
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Media Preview */}
       <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple-500/70 via-cyan-400/70 to-transparent"></div>
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
         <h2 className="text-xl font-semibold mb-4">Media Preview</h2>
         
         <div className="mb-4">
           <label className="block text-sm text-gray-400 mb-2">Gameplay Video</label>
           <div
             className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-              dragActive ? 'border-purple-500 bg-purple-500/10' : 'border-white/10 hover:border-white/20'
+              dragActive ? 'border-[var(--accent)] bg-[var(--accent)]/10' : 'border-white/10 hover:border-white/20'
             }`}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
@@ -131,8 +131,8 @@ export default function SubmitGameForm() {
             onDrop={handleDrop}
           >
             <div className="flex flex-col items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
-                <Upload className="w-6 h-6 text-purple-400" />
+              <div className="w-12 h-12 rounded-full bg-[var(--accent)]/20 flex items-center justify-center">
+                <Upload className="w-6 h-6 text-[var(--accent)]" />
               </div>
               <div>
                 <p className="text-sm text-gray-300 mb-1">Click to upload or drag and drop</p>
@@ -147,7 +147,7 @@ export default function SubmitGameForm() {
               />
               <label
                 htmlFor="video-upload"
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-medium cursor-pointer transition-colors"
+                className="px-4 py-2 bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] rounded-lg text-sm font-medium cursor-pointer transition-colors"
               >
                 Choose File
               </label>
@@ -162,7 +162,7 @@ export default function SubmitGameForm() {
                   <button
                     type="button"
                     onClick={() => removeFile(index)}
-                    className="text-gray-400 hover:text-red-400 transition-colors"
+                    className="text-gray-400 hover:text-[var(--accent)] transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -176,7 +176,7 @@ export default function SubmitGameForm() {
           <label className="block text-sm text-gray-400 mb-2">Screenshots</label>
           <div className="grid grid-cols-4 gap-3">
             {[1, 2, 3, 4].map((num) => (
-              <div key={num} className="aspect-video bg-dark-bg rounded-lg border border-white/10 flex items-center justify-center hover:border-purple-500/50 transition-colors cursor-pointer relative overflow-hidden">
+              <div key={num} className="aspect-video bg-dark-bg rounded-lg border border-white/10 flex items-center justify-center hover:border-[var(--accent)]/50 transition-colors cursor-pointer relative overflow-hidden">
                 <input
                   type="file"
                   accept="image/*"
@@ -194,7 +194,7 @@ export default function SubmitGameForm() {
 
       {/* Developer Information */}
       <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple-500/70 via-cyan-400/70 to-transparent"></div>
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
         <h2 className="text-xl font-semibold mb-4">Developer Information</h2>
         
         <div className="space-y-4">
@@ -207,7 +207,7 @@ export default function SubmitGameForm() {
               id="studioName"
               value={formData.studioName}
               onChange={(e) => setFormData(prev => ({ ...prev, studioName: e.target.value }))}
-              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
               placeholder="Enter your studio name"
             />
           </div>
@@ -223,7 +223,7 @@ export default function SubmitGameForm() {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
+                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
                 placeholder="you@example.com"
               />
             </div>
@@ -237,7 +237,7 @@ export default function SubmitGameForm() {
                 id="phone"
                 value={formData.phone}
                 onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
+                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
                 placeholder="+1 (555) 000-0000"
               />
             </div>
@@ -251,7 +251,7 @@ export default function SubmitGameForm() {
               id="location"
               value={formData.location}
               onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--accent)] transition-colors"
             >
               <option value="">Select a Region</option>
               <option value="north-america">North America</option>
@@ -267,7 +267,7 @@ export default function SubmitGameForm() {
 
       {/* Game Information */}
       <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple-500/70 via-cyan-400/70 to-transparent"></div>
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
         <h2 className="text-xl font-semibold mb-4">Game Information</h2>
         
         <div className="space-y-4">
@@ -281,7 +281,7 @@ export default function SubmitGameForm() {
               required
               value={formData.gameName}
               onChange={(e) => setFormData(prev => ({ ...prev, gameName: e.target.value }))}
-              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
               placeholder="Enter your game title"
             />
           </div>
@@ -296,7 +296,7 @@ export default function SubmitGameForm() {
                 required
                 value={formData.genre}
                 onChange={(e) => setFormData(prev => ({ ...prev, genre: e.target.value }))}
-                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors"
+                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--accent)] transition-colors"
               >
                 <option value="">Select genre</option>
                 <option value="action">Action</option>
@@ -318,7 +318,7 @@ export default function SubmitGameForm() {
                 id="developmentStatus"
                 value={formData.developmentStatus}
                 onChange={(e) => setFormData(prev => ({ ...prev, developmentStatus: e.target.value }))}
-                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors"
+                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--accent)] transition-colors"
               >
                 <option value="">Select status</option>
                 <option value="concept">Concept</option>
@@ -334,7 +334,7 @@ export default function SubmitGameForm() {
 
       {/* Platforms */}
       <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple-500/70 via-cyan-400/70 to-transparent"></div>
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
         <h2 className="text-xl font-semibold mb-4">Platforms</h2>
         
         <div className="flex flex-wrap gap-3">
@@ -345,7 +345,7 @@ export default function SubmitGameForm() {
               onClick={() => togglePlatform(platform)}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 formData.platforms.includes(platform)
-                  ? 'bg-purple-600 text-white'
+                  ? 'bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)]'
                   : 'bg-dark-bg text-gray-400 hover:text-white border border-white/10'
               }`}
             >
@@ -357,7 +357,7 @@ export default function SubmitGameForm() {
 
       {/* Game Description */}
       <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple-500/70 via-cyan-400/70 to-transparent"></div>
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
         <h2 className="text-xl font-semibold mb-4">Game Description</h2>
         
         <div className="space-y-4">
@@ -372,7 +372,7 @@ export default function SubmitGameForm() {
               onChange={(e) => setFormData(prev => ({ ...prev, shortDescription: e.target.value }))}
               rows={3}
               maxLength={280}
-              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors resize-none"
+              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors resize-none"
               placeholder="Describe your game in 280 characters..."
             />
             <p className="text-xs text-gray-500 mt-1">{formData.shortDescription.length}/280 characters</p>
@@ -396,7 +396,7 @@ export default function SubmitGameForm() {
 
       {/* Publishing Needs */}
       <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple-500/70 via-cyan-400/70 to-transparent"></div>
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
         <h2 className="text-xl font-semibold mb-4">Publishing Needs</h2>
         
         <div className="space-y-3">
@@ -413,7 +413,7 @@ export default function SubmitGameForm() {
                 type="checkbox"
                 checked={formData.publishingNeeds.includes(need)}
                 onChange={() => togglePublishingNeed(need)}
-                className="w-4 h-4 rounded border-white/20 bg-dark-bg text-purple-600 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer"
+                className="w-4 h-4 rounded border-white/20 bg-dark-bg text-[var(--accent)] focus:ring-[var(--accent)] focus:ring-offset-0 cursor-pointer"
               />
               <span className="text-sm text-gray-300 group-hover:text-white transition-colors">
                 {need}
@@ -431,7 +431,7 @@ export default function SubmitGameForm() {
             value={formData.additionalInfo}
             onChange={(e) => setFormData(prev => ({ ...prev, additionalInfo: e.target.value }))}
             rows={4}
-            className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors resize-none"
+            className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors resize-none"
             placeholder="Let us know if you have any specific requirements or questions..."
           />
         </div>
@@ -439,14 +439,14 @@ export default function SubmitGameForm() {
 
       {/* Terms Agreement */}
       <div className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple-500/70 via-cyan-400/70 to-transparent"></div>
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
         <label className="flex items-start gap-3 cursor-pointer group">
           <input
             type="checkbox"
             required
             checked={formData.agreeToTerms}
             onChange={(e) => setFormData(prev => ({ ...prev, agreeToTerms: e.target.checked }))}
-            className="w-4 h-4 mt-1 rounded border-white/20 bg-dark-bg text-purple-600 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer"
+            className="w-4 h-4 mt-1 rounded border-white/20 bg-dark-bg text-[var(--accent)] focus:ring-[var(--accent)] focus:ring-offset-0 cursor-pointer"
           />
           <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
             I confirm that I own the rights/license to this game and understand that submitting this 
@@ -459,7 +459,7 @@ export default function SubmitGameForm() {
       <div className="flex justify-center">
         <button
           type="submit"
-          className="px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 rounded-lg font-semibold text-lg shadow-lg shadow-purple-500/30 transition-all hover:shadow-purple-500/50 hover:scale-105"
+          className="px-8 py-4 bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] rounded-lg font-semibold text-lg shadow-lg shadow-[var(--accent)]/30 transition-all hover:shadow-[var(--accent)]/50 hover:scale-105"
         >
           Submit Your Game
         </button>

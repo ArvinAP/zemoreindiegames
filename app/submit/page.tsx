@@ -15,7 +15,7 @@ export default function SubmitPage() {
 
       <div className="container mx-auto px-6 max-w-4xl relative z-10">
         <div className="glass-panel rounded-[32px] p-10 text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Submit Your Game</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-[var(--text-primary)]">Submit Your Game</h1>
           <p className="text-white/80 max-w-2xl mx-auto">
             We're always excited to discover new indie games. To review the game, we'll 
             need the info below. If you have any questions, we want to hear it.

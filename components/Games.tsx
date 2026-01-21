@@ -24,11 +24,10 @@ const games = [
 export default function Games() {
   return (
     <section id="games" className="py-24 px-6 section-animate relative overflow-hidden">
-      <div className="absolute inset-0 grid-overlay"></div>
       <div className="container mx-auto max-w-6xl relative">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Our Games</h2>
-          <p className="text-white/75 text-lg">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-[var(--text-primary)]">Our Games</h2>
+          <p className="text-[var(--text-secondary)] text-lg">
             Discover the incredible titles we've helped bring to players worldwide
           </p>
         </div>

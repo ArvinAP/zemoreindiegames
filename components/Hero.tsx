@@ -10,7 +10,7 @@ export default function Hero() {
       <div className="relative z-10 container mx-auto max-w-6xl grid gap-16 lg:grid-cols-[1.1fr_0.9fr] items-center">
         <div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight mb-6 text-center lg:text-left">
-            <span className="text-gradient">Zemore Indie Games</span>
+            <span className="text-[var(--text-primary)] font-bold">Zemore Indie Games</span>
           </h1>
 
           <p className="text-2xl md:text-3xl font-semibold mb-6 text-gray-100 text-center lg:text-left">
@@ -22,7 +22,7 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-            <Link href="/submit" className="glow-ring bg-gradient-to-r from-purple-500 to-cyan-400 text-white font-semibold px-8 py-3 rounded-full transition-transform hover:-translate-y-1">
+            <Link href="/submit" className="bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] font-semibold px-8 py-3 rounded-full transition-transform hover:-translate-y-1">
               Submit Your Game
             </Link>
             <Link href="/games" className="px-8 py-3 rounded-full border border-white/20 text-white/80 hover:text-white hover:border-white/60 transition-colors">

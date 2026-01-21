@@ -73,7 +73,7 @@ export default function ContactPage() {
 
       <div className="container mx-auto px-6 relative z-10 space-y-16">
         <div className="glass-panel rounded-[36px] p-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Get in Touch</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-[var(--text-primary)]">Get in Touch</h1>
           <p className="text-lg text-white/80 max-w-2xl mx-auto">
             Have questions about our publishing services? Want to discuss your game? 
             We'd love to hear from you. Send us a message and we'll get back to you soon.
@@ -84,12 +84,12 @@ export default function ContactPage() {
           {/* Contact Form */}
           <div className="glass-panel rounded-[32px] p-8">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <MessageSquare className="w-6 h-6 text-purple-400" />
+              <MessageSquare className="w-6 h-6 text-[var(--accent)]" />
               Send us a Message
             </h2>
             
             {submitted && (
-              <div className="mb-6 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400">
+              <div className="mb-6 p-4 bg-[var(--accent)]/20 border border-[var(--accent)]/50 rounded-lg text-[var(--accent)]">
                 Thank you for your message! We'll get back to you within 24-48 hours.
               </div>
             )}
@@ -167,7 +167,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/50"
+              className="w-full bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] disabled:opacity-50 disabled:cursor-not-allowed font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[var(--accent)]/50"
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
@@ -177,7 +177,7 @@ export default function ContactPage() {
           {/* Contact Information */}
           <div className="space-y-8">
             <div className="glass-panel rounded-[32px] p-8">
-              <h2 className="text-2xl font-bold mb-6 text-gradient">Let's Connect</h2>
+              <h2 className="text-3xl font-bold mb-6 text-[var(--text-primary)]">Let's Connect</h2>
               <p className="text-white/80 mb-6">
                 Whether you're a developer with a game ready for publishing, or just curious about our services, 
                 we're here to help. Our team is passionate about supporting indie developers and would love to 
@@ -185,8 +185,8 @@ export default function ContactPage() {
               </p>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                    <Mail className="w-5 h-5 text-purple-400" />
+                  <div className="w-10 h-10 bg-[var(--accent)]/20 rounded-lg flex items-center justify-center">
+                    <Mail className="w-5 h-5 text-[var(--accent)]" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-400">Email</p>
@@ -206,9 +206,9 @@ export default function ContactPage() {
                   <a
                     key={index}
                     href={social.href}
-                    className="flex items-center gap-3 p-3 bg-dark-bg rounded-lg border border-white/10 hover:border-purple-500/50 transition-colors group"
+                    className="flex items-center gap-3 p-3 bg-dark-bg rounded-lg border border-white/10 hover:border-[var(--accent)]/50 transition-colors group"
                   >
-                    <social.icon className="w-5 h-5 text-gray-400 group-hover:text-purple-400 transition-colors" />
+                    <social.icon className="w-5 h-5 text-gray-400 group-hover:text-[var(--accent)] transition-colors" />
                     <span className="text-sm text-gray-300 group-hover:text-white transition-colors">
                       {social.label}
                     </span>

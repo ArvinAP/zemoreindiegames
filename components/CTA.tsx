@@ -24,18 +24,18 @@ export default function CTA({
     <section id={id} className="py-24 px-6 bg-[#04060f]">
       <div className="container mx-auto max-w-4xl text-center">
         <div className="glass-panel rounded-[36px] p-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-[var(--text-primary)]">
             {title}
           </h2>
           
-          <p className="text-lg text-white/80 mb-10 max-w-2xl mx-auto">
+          <p className="text-lg text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto">
             {body}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href={primary.href}
-              className="glow-ring bg-gradient-to-r from-purple-500 to-cyan-400 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 hover:-translate-y-1"
+              className="bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] font-semibold px-8 py-3 rounded-full transition-all duration-300 hover:-translate-y-1"
             >
               {primary.label}
             </Link>

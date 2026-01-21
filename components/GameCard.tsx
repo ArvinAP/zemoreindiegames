@@ -20,11 +20,11 @@ export default function GameCard({ title, description, image, gradient, develope
             className="w-full h-full object-cover object-center opacity-70 group-hover:opacity-90 transition duration-500"
             onError={(e) => {
               e.currentTarget.style.display = 'none'
-              e.currentTarget.parentElement!.innerHTML = '<div class="h-full flex items-center justify-center text-5xl text-white/30">🎮</div>'
+              e.currentTarget.parentElement!.innerHTML = '<div class="h-full flex items-center justify-center text-white/30">Image not available</div>'
             }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-          <div className="absolute top-4 left-4 px-4 py-2 rounded-full text-xs uppercase tracking-[0.3em] bg-white/10 text-white/80">
+          <div className="absolute top-4 left-4 px-4 py-2 rounded-full text-xs uppercase tracking-[0.3em] bg-black/80 border-2 border-white/60 text-white font-semibold">
             Featured Game
           </div>
           <div className="absolute bottom-4 left-4 text-white">

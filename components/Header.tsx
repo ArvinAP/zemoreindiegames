@@ -63,7 +63,7 @@ export default function Header() {
             <Link href="/contact" className="text-sm hover:text-cyan-400 transition-colors">
               Contact
             </Link>
-            <Link href="/submit" className="text-sm bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors">
+            <Link href="/submit" className="text-sm bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] px-4 py-2 rounded-lg transition-colors">
               Submit Game
             </Link>
           </div>
@@ -119,7 +119,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/submit"
-                className="px-4 py-3 text-sm bg-purple-600 hover:bg-purple-700 transition-colors"
+                className="px-4 py-3 text-sm bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] transition-colors"
                 onClick={() => setMobileNavOpen(false)}
               >
                 Submit Game

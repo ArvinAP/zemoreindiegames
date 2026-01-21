@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import { Rocket, Target, Handshake } from 'lucide-react'
 import CTA from '@/components/CTA'
 
 export const metadata: Metadata = {
@@ -16,7 +15,7 @@ export default function AboutPage() {
 
       <div className="container mx-auto px-6 relative z-10 space-y-16 pb-16">
         <div className="glass-panel rounded-[36px] p-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Who We Are</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-[var(--text-primary)]">Who We Are</h1>
           <p className="text-lg text-white/80 max-w-2xl mx-auto">
             Our journey from marketing specialists to passionate indie game publishers
           </p>
@@ -25,7 +24,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <div className="glass-panel rounded-[32px] p-10 space-y-6">
-              <h2 className="text-3xl font-bold text-gradient">Our Origins</h2>
+              <h2 className="text-3xl font-bold text-[var(--text-primary)]">Our Origins</h2>
               <p className="text-white/80 leading-relaxed">
                 Zemore Indie Games began as an outsourced marketing team, helping game developers bring their creations to the attention of players worldwide. We spent years crafting compelling campaigns, building communities, and understanding what makes games truly special.
               </p>
@@ -36,22 +35,16 @@ export default function AboutPage() {
           </div>
           
           <div className="glass-panel rounded-[32px] p-10 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Rocket className="w-7 h-7 text-white" />
-            </div>
-            <h3 className="text-2xl font-bold mb-3 text-white">The Transition</h3>
+            <h3 className="text-2xl font-bold mb-3 text-[var(--text-primary)]">The Transition</h3>
             <p className="text-white/80">
-              In 2020, we made the leap from marketing specialists to full-service indie game publishers, bringing our expertise in player engagement to every aspect of game development and distribution.
+              In 2026, we made the leap from marketing specialists to full-service indie game publishers, bringing our expertise in player engagement to every aspect of game development and distribution.
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="glass-panel rounded-[32px] p-10 text-center order-2 lg:order-1">
-            <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-teal-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Target className="w-7 h-7 text-white" />
-            </div>
-            <h3 className="text-2xl font-bold mb-3 text-white">Our Mission</h3>
+            <h3 className="text-2xl font-bold mb-3 text-[var(--text-primary)]">Our Mission</h3>
             <p className="text-white/80">
               To empower indie developers to reach their full potential by providing the support, resources, and expertise they need to succeed in the competitive gaming landscape.
             </p>
@@ -60,7 +53,7 @@ export default function AboutPage() {
           <div className="relative order-1 lg:order-2">
             <div className="absolute -inset-6 bg-gradient-to-br from-cyan-500/15 via-transparent to-transparent blur-3xl"></div>
             <div className="glass-panel rounded-[32px] p-10 space-y-6 relative">
-              <h2 className="text-3xl font-bold text-gradient">Our Evolution</h2>
+              <h2 className="text-3xl font-bold text-[var(--text-primary)]">Our Evolution</h2>
               <p className="text-white/80 leading-relaxed">
                 Today, Zemore Indie Games stands as a beacon for independent developers seeking more than just a publisher—we're partners in success. Our marketing background gives us unique insights into what players want, how to build communities, and how to make games stand out in a crowded market.
               </p>
@@ -72,7 +65,7 @@ export default function AboutPage() {
         </div>
 
         <div className="glass-panel rounded-[36px] p-10">
-          <h2 className="text-3xl font-bold text-center mb-8 text-gradient">Our Approach</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 text-[var(--text-primary)]">Our Approach</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { title: 'Partnership First', body: 'We believe in true partnerships where success is shared and developers maintain creative control.' },
@@ -80,10 +73,7 @@ export default function AboutPage() {
               { title: 'Developer Success', body: "Your success is our success. We're committed to helping you reach your full potential." },
             ].map((item) => (
               <div key={item.title} className="text-center">
-                <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mx-auto mb-4">
-                  <Handshake className="w-6 h-6 text-white/80" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3 text-white">{item.title}</h3>
+                <h3 className="text-xl font-semibold mb-3 text-[var(--text-primary)]">{item.title}</h3>
                 <p className="text-white/70 text-sm">{item.body}</p>
               </div>
             ))}

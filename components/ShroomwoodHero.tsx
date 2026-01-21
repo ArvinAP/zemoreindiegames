@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useMemo, useState } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 
 type HeroSlide = {
   id: string
@@ -94,9 +94,11 @@ export default function ShroomwoodHero() {
 
   const [activeIndex, setActiveIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [hasFocus, setHasFocus] = useState(false)
+  const heroRef = useRef<HTMLDivElement>(null)
 
-  const changeSlide = (newIndex: number) => {
-    if (isTransitioning) return
+  const changeSlide = (newIndex: number, isManual = false) => {
+    if (isTransitioning || (!isManual && hasFocus)) return
     setIsTransitioning(true)
     setTimeout(() => {
       setActiveIndex(newIndex)
@@ -108,24 +110,38 @@ export default function ShroomwoodHero() {
     if (slides.length <= 1) return
 
     const id = window.setTimeout(() => {
-      changeSlide((activeIndex + 1) % slides.length)
+      // Auto-advance disabled
+      // changeSlide((activeIndex + 1) % slides.length)
     }, 8000)
 
     return () => window.clearTimeout(id)
   }, [activeIndex, slides.length, isTransitioning])
 
+  useEffect(() => {
+    const handleFocusIn = () => setHasFocus(true)
+    const handleFocusOut = () => setHasFocus(false)
+    const hero = heroRef.current
+    if (!hero) return
+    hero.addEventListener('focusin', handleFocusIn)
+    hero.addEventListener('focusout', handleFocusOut)
+    return () => {
+      hero.removeEventListener('focusin', handleFocusIn)
+      hero.removeEventListener('focusout', handleFocusOut)
+    }
+  }, [])
+
   const goPrev = () => {
-    changeSlide((activeIndex - 1 + slides.length) % slides.length)
+    changeSlide((activeIndex - 1 + slides.length) % slides.length, true)
   }
 
   const goNext = () => {
-    changeSlide((activeIndex + 1) % slides.length)
+    changeSlide((activeIndex + 1) % slides.length, true)
   }
 
   const active = slides[activeIndex]
 
   return (
-    <section className="relative overflow-hidden px-6 pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-20 h-[90vh] flex items-start md:items-center">
+    <section ref={heroRef} className="relative overflow-hidden px-6 pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-20 h-[90vh] flex items-start md:items-center">
       <div className="absolute inset-0 pointer-events-none">
         <img
           src={active.backgroundImage}
@@ -133,7 +149,6 @@ export default function ShroomwoodHero() {
           className="w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-[rgba(4,6,15,0.92)]"></div>
-        <div className="absolute inset-0 grid-overlay opacity-80"></div>
       </div>
 
       {active.rightImage && (
@@ -148,6 +163,31 @@ export default function ShroomwoodHero() {
         </div>
       )}
 
+      {slides.length > 1 && (
+        <>
+          <button
+            type="button"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-white/10 border border-white/20 text-white/80 hover:bg-white/20 hover:text-white transition-colors"
+            aria-label="Previous slide"
+            onClick={goPrev}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-white/10 border border-white/20 text-white/80 hover:bg-white/20 hover:text-white transition-colors"
+            aria-label="Next slide"
+            onClick={goNext}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </>
+      )}
+
       <div
         className={`relative z-20 container mx-auto lg:mx-0 lg:mr-auto lg:ml-12 xl:ml-16 max-w-3xl hero-content-fade ${
           isTransitioning ? 'hero-content-fade-out' : 'hero-content-fade-in'
@@ -157,7 +197,7 @@ export default function ShroomwoodHero() {
           className="grid gap-12 items-center grid-cols-1"
         >
           <div className="text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 mt-4 sm:mt-0 rounded-full bg-white/10 border border-white/10 text-xs uppercase tracking-[0.3em] text-white/80">
+            <div className="inline-flex items-center gap-2 px-4 py-2 mt-4 sm:mt-0 rounded-full bg-black/80 border-2 border-white/60 text-xs uppercase tracking-[0.3em] text-white font-semibold">
               Featured Game
             </div>
 
@@ -187,7 +227,7 @@ export default function ShroomwoodHero() {
                     ? 'bg-white text-red-600 border-2 border-red-600 hover:bg-red-50'
                     : active.id === 'shroomwood'
                     ? 'bg-[#e5ca89] text-[#2e222f] border-2 border-[#2e222f] hover:bg-[#d9ba73]'
-                    : 'glow-ring bg-gradient-to-r from-purple-500 to-cyan-400 text-white'
+                    : 'bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)]'
                 }`}
               >
                 {active.primaryCta.label}
@@ -212,7 +252,7 @@ export default function ShroomwoodHero() {
                         : 'w-2 bg-white/30 hover:bg-white/50'
                     }`}
                     aria-label={`Go to ${s.title}`}
-                    onClick={() => changeSlide(idx)}
+                    onClick={() => changeSlide(idx, true)}
                   />
                 ))}
               </div>

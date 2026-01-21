@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import ServiceCard from '@/components/ServiceCard'
-import { Gamepad2, Search, Megaphone, Rocket, Users, DollarSign } from 'lucide-react'
 import CTA from '@/components/CTA'
 
 export const metadata: Metadata = {
@@ -13,44 +12,32 @@ export default function ServicesPage() {
     {
       id: 1,
       title: 'Personalized Game Design',
-      description: 'We work closely with developers to refine gameplay mechanics, improve user experience, and ensure your game reaches its full potential. Our hands-on approach means we\'re with you every step of the way.',
-      icon: Gamepad2,
-      color: 'from-purple-500 to-purple-700'
+      description: 'We work closely with developers to refine gameplay mechanics, improve user experience, and ensure your game reaches its full potential. Our hands-on approach means we\'re with you every step of the way.'
     },
     {
       id: 2,
       title: 'Playtesting & QA',
-      description: 'Comprehensive testing services to identify bugs, balance gameplay, and gather valuable player feedback. We ensure your game is polished and ready for launch.',
-      icon: Search,
-      color: 'from-blue-500 to-blue-700'
+      description: 'Comprehensive testing services to identify bugs, balance gameplay, and gather valuable player feedback. We ensure your game is polished and ready for launch.'
     },
     {
       id: 3,
       title: 'Marketing & Planning',
-      description: 'Strategic marketing campaigns tailored to your game\'s unique identity. From social media to press outreach, we help you build a community around your game.',
-      icon: Megaphone,
-      color: 'from-cyan-500 to-cyan-700'
+      description: 'Strategic marketing campaigns tailored to your game\'s unique identity. From social media to press outreach, we help you build a community around your game.'
     },
     {
       id: 4,
       title: 'Publishing & Distribution',
-      description: 'End-to-end publishing support across all major platforms. We handle the complexities of distribution so you can focus on creating amazing games.',
-      icon: Rocket,
-      color: 'from-teal-500 to-teal-700'
+      description: 'End-to-end publishing support across all major platforms. We handle the complexities of distribution so you can focus on creating amazing games.'
     },
     {
       id: 5,
       title: 'Community Building',
-      description: 'We help you build and engage with your player community, creating lasting relationships that drive long-term success for your game.',
-      icon: Users,
-      color: 'from-green-500 to-green-700'
+      description: 'We help you build and engage with your player community, creating lasting relationships that drive long-term success for your game.'
     },
-    {
+      {
       id: 6,
       title: 'Funding & Resources',
-      description: 'Access to funding opportunities and development resources to help you bring your vision to life without compromising your creative control.',
-      icon: DollarSign,
-      color: 'from-yellow-500 to-yellow-700'
+      description: 'Access to funding opportunities and development resources to help you bring your vision to life without compromising your creative control.'
     }
   ]
 
@@ -62,10 +49,10 @@ export default function ServicesPage() {
 
       <div className="container mx-auto px-6 relative z-10 space-y-16 pb-16">
         <div className="glass-panel rounded-[36px] p-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">What We Do</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[var(--text-primary)]">What We Do</h1>
           <div className="max-w-4xl mx-auto">
             <p className="text-xl text-white/85 mb-6 leading-relaxed">
-              At Zemore Indie Games, we believe in a <span className="text-purple-300 font-semibold">personalized, grassroots approach</span> to game publishing. 
+              At Zemore Indie Games, we believe in a <span className="text-[var(--accent)] font-semibold">personalized, grassroots approach</span> to game publishing. 
               We're not just another publisher—we're your dedicated partners in success.
             </p>
             <p className="text-lg text-white/70 leading-relaxed">
@@ -82,15 +69,13 @@ export default function ServicesPage() {
               key={service.id}
               title={service.title}
               description={service.description}
-              icon={service.icon}
-              color={service.color}
             />
           ))}
         </div>
 
         <div className="glass-panel rounded-[32px] p-10">
           <div className="text-center">
-            <h2 className="text-3xl font-bold mb-4 text-gradient">Our Commitment</h2>
+            <h2 className="text-3xl font-bold mb-4 text-[var(--text-primary)]">Our Commitment</h2>
             <p className="text-lg text-white/80 mb-8 max-w-3xl mx-auto">
               We're committed to providing hands-on support that goes beyond traditional publishing. 
               Our team becomes an extension of your development process, offering insights, resources, 
