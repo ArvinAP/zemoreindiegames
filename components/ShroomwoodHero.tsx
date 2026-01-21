@@ -130,14 +130,6 @@ export default function ShroomwoodHero() {
     }
   }, [])
 
-  const goPrev = () => {
-    changeSlide((activeIndex - 1 + slides.length) % slides.length, true)
-  }
-
-  const goNext = () => {
-    changeSlide((activeIndex + 1) % slides.length, true)
-  }
-
   const active = slides[activeIndex]
 
   return (
@@ -161,31 +153,6 @@ export default function ShroomwoodHero() {
             />
           </div>
         </div>
-      )}
-
-      {slides.length > 1 && (
-        <>
-          <button
-            type="button"
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-white/10 border border-white/20 text-white/80 hover:bg-white/20 hover:text-white transition-colors"
-            aria-label="Previous slide"
-            onClick={goPrev}
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button
-            type="button"
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-white/10 border border-white/20 text-white/80 hover:bg-white/20 hover:text-white transition-colors"
-            aria-label="Next slide"
-            onClick={goNext}
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </>
       )}
 
       <div
