@@ -82,8 +82,8 @@ export default function SubmitGameForm() {
     setIsSubmitting(true)
     
     try {
-      // Send to Discord webhook
-      const response = await fetch('https://discord.com/api/webhooks/1463925611541041258/1ZpvRPWYy-9mOVpaG0p8VNdysPbkQ4YiTPMZQhfUDw7MhbB7WO0m4-2Kxm5CrvYj6Snk', {
+      // Send to Discord webhook via API route
+      const response = await fetch('/api/discord', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
