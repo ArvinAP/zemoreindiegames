@@ -64,7 +64,7 @@ export default function Header() {
               Contact
             </Link>
             <Link href="/submit" className="text-sm bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] px-4 py-2 rounded-lg transition-colors">
-              Submit Game
+              Pitch Your Game
             </Link>
           </div>
         </div>

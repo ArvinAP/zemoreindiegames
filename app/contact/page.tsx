@@ -47,15 +47,35 @@ export default function ContactPage() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    setSubmitted(true)
-    setIsSubmitting(false)
-    setFormData({ name: '', email: '', subject: '', message: '' })
-    
-    // Reset success message after 5 seconds
-    setTimeout(() => setSubmitted(false), 5000)
+    try {
+      // Send to Discord webhook
+      const response = await fetch('https://discord.com/api/webhooks/1463925611541041258/1ZpvRPWYy-9mOVpaG0p8VNdysPbkQ4YiTPMZQhfUDw7MhbB7WO0m4-2Kxm5CrvYj6Snk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: `**New Contact Form Submission**\n\n**Name:** ${formData.name}\n**Email:** ${formData.email}\n**Subject:** ${formData.subject}\n**Message:**\n${formData.message}`,
+          username: 'Zemore Contact Form',
+          avatar_url: 'https://zemoregames.com/favicon.ico'
+        })
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to send message')
+      }
+      
+      setSubmitted(true)
+      setFormData({ name: '', email: '', subject: '', message: '' })
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch (error) {
+      console.error('Error sending message:', error)
+      // You could show an error message here if needed
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const socialLinks = [
@@ -66,10 +86,7 @@ export default function ContactPage() {
   ]
 
   return (
-    <main className="page-surface min-h-screen bg-dark-bg pt-24 pb-16 relative overflow-hidden">
-      <div className="absolute inset-0 grid-overlay"></div>
-      <div className="absolute -left-16 top-32 w-[320px] h-[320px] bg-gradient-to-br from-purple-500/25 via-transparent to-transparent blur-3xl"></div>
-      <div className="absolute -right-16 bottom-10 w-[280px] h-[280px] bg-gradient-to-tr from-cyan-400/25 via-transparent to-transparent blur-3xl"></div>
+    <main className="min-h-screen bg-dark-bg pt-24 pb-16 relative overflow-hidden">
 
       <div className="container mx-auto px-6 relative z-10 space-y-16">
         <div className="glass-panel rounded-[36px] p-10 text-center">

@@ -1,13 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { Upload, X } from 'lucide-react'
 
 export default function SubmitGameForm() {
   const [formData, setFormData] = useState({
-    // Media Preview
-    mediaFiles: [] as File[],
-    screenshots: [] as File[],
+    // Media URLs
+    videoUrl: '',
+    screenshotUrls: [''],
     
     // Developer Information
     studioName: '',
@@ -35,56 +34,28 @@ export default function SubmitGameForm() {
     agreeToTerms: false,
   })
 
-  const [dragActive, setDragActive] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true)
-    } else if (e.type === "dragleave") {
-      setDragActive(false)
-    }
+  const updateScreenshotUrl = (index: number, url: string) => {
+    setFormData(prev => {
+      const newScreenshotUrls = [...prev.screenshotUrls]
+      newScreenshotUrls[index] = url
+      return { ...prev, screenshotUrls: newScreenshotUrls }
+    })
   }
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const files = Array.from(e.dataTransfer.files)
-      setFormData(prev => ({
-        ...prev,
-        mediaFiles: [...prev.mediaFiles, ...files]
-      }))
-    }
-  }
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files)
-      setFormData(prev => ({
-        ...prev,
-        mediaFiles: [...prev.mediaFiles, ...files]
-      }))
-    }
-  }
-
-  const handleScreenshotChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files)
-      setFormData(prev => ({
-        ...prev,
-        screenshots: [...prev.screenshots, ...files]
-      }))
-    }
-  }
-
-  const removeFile = (index: number) => {
+  const addScreenshotUrl = () => {
     setFormData(prev => ({
       ...prev,
-      mediaFiles: prev.mediaFiles.filter((_, i) => i !== index)
+      screenshotUrls: [...prev.screenshotUrls, '']
+    }))
+  }
+
+  const removeScreenshotUrl = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      screenshotUrls: prev.screenshotUrls.filter((_, i) => i !== index)
     }))
   }
 
@@ -106,89 +77,119 @@ export default function SubmitGameForm() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
-    alert('Thank you for your submission! This is a demo - in production, this would send your game details to our team.')
+    setIsSubmitting(true)
+    
+    try {
+      // Send to Discord webhook
+      const response = await fetch('https://discord.com/api/webhooks/1463925611541041258/1ZpvRPWYy-9mOVpaG0p8VNdysPbkQ4YiTPMZQhfUDw7MhbB7WO0m4-2Kxm5CrvYj6Snk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: `**New Game Submission**\n\n**Studio Name:** ${formData.studioName}\n**Email:** ${formData.email}\n**Phone:** ${formData.phone}\n**Location:** ${formData.location}\n\n**Game Information:**\n**Title:** ${formData.gameName}\n**Genre:** ${formData.genre}\n**Development Status:** ${formData.developmentStatus}\n**Platforms:** ${formData.platforms.join(', ') || 'None selected'}\n\n**Descriptions:**\n**Short:** ${formData.shortDescription}\n**Detailed:** ${formData.detailedDescription}\n\n**Publishing Needs:** ${formData.publishingNeeds.join(', ') || 'None selected'}\n\n**Additional Info:** ${formData.additionalInfo || 'None'}\n\n**Video URL:** ${formData.videoUrl || 'Not provided'}\n**Screenshot URLs:** ${formData.screenshotUrls.filter(url => url.trim()).join(', ') || 'None provided'}\n\n**Terms Agreed:** ${formData.agreeToTerms ? 'Yes' : 'No'}`,
+          username: 'Zemore Game Submissions',
+          avatar_url: 'https://zemoregames.com/favicon.ico'
+        })
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to send submission')
+      }
+      
+      setSubmitted(true)
+      // Reset form
+      setFormData({
+        videoUrl: '',
+        screenshotUrls: [''],
+        studioName: '',
+        email: '',
+        phone: '',
+        location: '',
+        gameName: '',
+        genre: '',
+        developmentStatus: '',
+        platforms: [],
+        shortDescription: '',
+        detailedDescription: '',
+        publishingNeeds: [],
+        additionalInfo: '',
+        agreeToTerms: false,
+      })
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch (error) {
+      console.error('Error sending submission:', error)
+      // You could show an error message here if needed
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
-      {/* Media Preview */}
+    <>
+      {submitted && (
+        <div className="mb-6 p-4 bg-[var(--accent)]/20 border border-[var(--accent)]/50 rounded-lg text-[var(--accent)] text-center">
+          Thank you for your game submission! We'll review your game and get back to you within 5-7 business days.
+        </div>
+      )}
+      
+      <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Media URLs */}
       <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
         <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
-        <h2 className="text-xl font-semibold mb-4">Media Preview</h2>
+        <h2 className="text-xl font-semibold mb-4">Media URLs</h2>
         
-        <div className="mb-4">
-          <label className="block text-sm text-gray-400 mb-2">Gameplay Video</label>
-          <div
-            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-              dragActive ? 'border-[var(--accent)] bg-[var(--accent)]/10' : 'border-white/10 hover:border-white/20'
-            }`}
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-          >
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-[var(--accent)]/20 flex items-center justify-center">
-                <Upload className="w-6 h-6 text-[var(--accent)]" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-300 mb-1">Click to upload or drag and drop</p>
-                <p className="text-xs text-gray-500">MP4, MOV, or AVI (max. 500MB)</p>
-              </div>
-              <input
-                type="file"
-                accept="video/*"
-                onChange={handleFileChange}
-                className="hidden"
-                id="video-upload"
-              />
-              <label
-                htmlFor="video-upload"
-                className="px-4 py-2 bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] rounded-lg text-sm font-medium cursor-pointer transition-colors"
-              >
-                Choose File
-              </label>
-            </div>
-          </div>
-          
-          {formData.mediaFiles.length > 0 && (
-            <div className="mt-4 space-y-2">
-              {formData.mediaFiles.map((file, index) => (
-                <div key={index} className="flex items-center justify-between bg-dark-bg rounded-lg p-3">
-                  <span className="text-sm text-gray-300">{file.name}</span>
-                  <button
-                    type="button"
-                    onClick={() => removeFile(index)}
-                    className="text-gray-400 hover:text-[var(--accent)] transition-colors"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+        <div className="mb-6">
+          <label htmlFor="videoUrl" className="block text-sm text-gray-400 mb-2">
+            Gameplay Video URL
+          </label>
+          <input
+            type="url"
+            id="videoUrl"
+            value={formData.videoUrl}
+            onChange={(e) => setFormData(prev => ({ ...prev, videoUrl: e.target.value }))}
+            className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
+            placeholder="https://youtube.com/watch?v=..."
+          />
+          <p className="text-xs text-gray-500 mt-1">YouTube, Vimeo, or other video platform link</p>
         </div>
 
         <div>
-          <label className="block text-sm text-gray-400 mb-2">Screenshots</label>
-          <div className="grid grid-cols-4 gap-3">
-            {[1, 2, 3, 4].map((num) => (
-              <div key={num} className="aspect-video bg-dark-bg rounded-lg border border-white/10 flex items-center justify-center hover:border-[var(--accent)]/50 transition-colors cursor-pointer relative overflow-hidden">
+          <label className="block text-sm text-gray-400 mb-2">Screenshot URLs</label>
+          <div className="space-y-3">
+            {formData.screenshotUrls.map((url, index) => (
+              <div key={index} className="flex gap-3">
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleScreenshotChange}
-                  className="absolute inset-0 opacity-0 cursor-pointer"
-                  id={`screenshot-${num}`}
+                  type="url"
+                  value={url}
+                  onChange={(e) => updateScreenshotUrl(index, e.target.value)}
+                  className="flex-1 bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
+                  placeholder="Enter screenshot URL"
                 />
-                <span className="text-2xl text-gray-600">{num}</span>
+                {formData.screenshotUrls.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeScreenshotUrl(index)}
+                    className="px-3 py-2 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg hover:bg-red-500/30 transition-colors"
+                  >
+                    Remove
+                  </button>
+                )}
               </div>
             ))}
+            <button
+              type="button"
+              onClick={addScreenshotUrl}
+              className="px-4 py-2 bg-[var(--accent)]/20 text-[var(--accent)] border border-[var(--accent)]/30 rounded-lg hover:bg-[var(--accent)]/30 transition-colors"
+            >
+              Add Another Screenshot
+            </button>
           </div>
-          <p className="text-xs text-gray-500 mt-2">Press Alt+Shift to upload</p>
+          <p className="text-xs text-gray-500 mt-2">Direct links to screenshots (Imgur, Dropbox, etc.)</p>
         </div>
       </section>
 
@@ -459,9 +460,10 @@ export default function SubmitGameForm() {
       <div className="flex justify-center">
         <button
           type="submit"
-          className="px-8 py-4 bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] rounded-lg font-semibold text-lg shadow-lg shadow-[var(--accent)]/30 transition-all hover:shadow-[var(--accent)]/50 hover:scale-105"
+          disabled={isSubmitting}
+          className="px-8 py-4 bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-semibold text-lg shadow-lg shadow-[var(--accent)]/30 transition-all hover:shadow-[var(--accent)]/50 hover:scale-105"
         >
-          Submit Your Game
+          {isSubmitting ? 'Submitting...' : 'Submit Your Game'}
         </button>
       </div>
 
@@ -469,5 +471,6 @@ export default function SubmitGameForm() {
         We'll review your submission and get back to you within 5-7 business days
       </p>
     </form>
+    </>
   )
 }

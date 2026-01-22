@@ -9,12 +9,12 @@ export default function WhoWeAre() {
   ]
 
   return (
-    <section id="about" className="py-24 px-6 section-animate relative overflow-hidden">
+    <section id="about" className="py-[calc(6rem*1.1)] px-6 section-animate relative overflow-hidden">
       <div className="container mx-auto max-w-6xl relative">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-14 items-center">
-          <div className="glass-panel rounded-[32px] p-10">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 text-[var(--text-primary)]">Who We Are</h2>
-            <div className="space-y-6 text-white/80 leading-relaxed">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-[calc(3.5rem*1.1)] items-center scale-105 origin-top">
+          <div className="glass-panel rounded-[32px] p-[calc(2.5rem*1.1)]">
+            <h2 className="text-[calc(2.5rem*1.1)] md:text-[calc(3rem*1.1)] font-bold mb-[calc(2rem*1.1)] text-[var(--text-primary)]">Who We Are</h2>
+            <div className="space-y-[calc(1.5rem*1.1)] text-white/80 leading-relaxed">
               <p>
                 Zemore Indie Games began as an outsourced marketing team working closely with independent developers. Over time, we saw a common pattern: great games with strong creative vision often struggled to reach the audience they deserved. The problem was not the quality of the games, but the lack of access to the right support, visibility, and publishing opportunities.
               </p>

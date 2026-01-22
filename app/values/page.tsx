@@ -37,10 +37,7 @@ export default function ValuesPage() {
   ]
 
   return (
-    <main className="page-surface min-h-screen bg-dark-bg pt-24 pb-0 relative overflow-hidden">
-      <div className="absolute inset-0 grid-overlay"></div>
-      <div className="absolute -left-20 top-32 w-[300px] h-[300px] bg-gradient-to-br from-purple-500/25 via-transparent to-transparent blur-3xl"></div>
-      <div className="absolute -right-16 bottom-10 w-[280px] h-[280px] bg-gradient-to-tr from-cyan-400/25 via-transparent to-transparent blur-3xl"></div>
+    <main className="min-h-screen bg-[#0a0f1d] pt-24 pb-0 relative overflow-hidden">
 
       <div className="container mx-auto px-6 relative z-10 pb-16">
         <div className="glass-panel rounded-[36px] p-10 text-center mb-16">

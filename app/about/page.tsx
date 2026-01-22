@@ -8,10 +8,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="page-surface min-h-screen bg-dark-bg pt-24 pb-0 relative overflow-hidden">
-      <div className="absolute inset-0 grid-overlay"></div>
-      <div className="absolute -left-10 top-40 w-[320px] h-[320px] bg-gradient-to-br from-purple-500/25 via-transparent to-transparent blur-3xl"></div>
-      <div className="absolute -right-20 bottom-10 w-[280px] h-[280px] bg-gradient-to-tr from-cyan-400/20 via-transparent to-transparent blur-3xl"></div>
+    <main className="min-h-screen bg-[#0a0f1d] pt-24 pb-0 relative overflow-hidden">
 
       <div className="container mx-auto px-6 relative z-10 space-y-16 pb-16">
         <div className="glass-panel rounded-[36px] p-10 text-center">
@@ -51,7 +48,6 @@ export default function AboutPage() {
           </div>
           
           <div className="relative order-1 lg:order-2">
-            <div className="absolute -inset-6 bg-gradient-to-br from-cyan-500/15 via-transparent to-transparent blur-3xl"></div>
             <div className="glass-panel rounded-[32px] p-10 space-y-6 relative">
               <h2 className="text-3xl font-bold text-[var(--text-primary)]">Our Evolution</h2>
               <p className="text-white/80 leading-relaxed">
