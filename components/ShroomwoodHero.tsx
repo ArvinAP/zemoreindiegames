@@ -110,8 +110,7 @@ export default function ShroomwoodHero() {
     if (slides.length <= 1) return
 
     const id = window.setTimeout(() => {
-      // Auto-advance disabled
-      // changeSlide((activeIndex + 1) % slides.length)
+      changeSlide((activeIndex + 1) % slides.length)
     }, 8000)
 
     return () => window.clearTimeout(id)

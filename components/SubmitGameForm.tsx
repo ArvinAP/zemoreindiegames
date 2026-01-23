@@ -438,24 +438,6 @@ export default function SubmitGameForm() {
         </div>
       </section>
 
-      {/* Terms Agreement */}
-      <div className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
-        <label className="flex items-start gap-3 cursor-pointer group">
-          <input
-            type="checkbox"
-            required
-            checked={formData.agreeToTerms}
-            onChange={(e) => setFormData(prev => ({ ...prev, agreeToTerms: e.target.checked }))}
-            className="w-4 h-4 mt-1 rounded border-white/20 bg-dark-bg text-[var(--accent)] focus:ring-[var(--accent)] focus:ring-offset-0 cursor-pointer"
-          />
-          <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-            I confirm that I own the rights/license to this game and understand that submitting this 
-            form doesn't guarantee publication. By submitting, I agree to Zemore's terms of service.
-          </span>
-        </label>
-      </div>
-
       {/* Submit Button */}
       <div className="flex justify-center">
         <button
