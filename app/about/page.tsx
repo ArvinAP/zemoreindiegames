@@ -23,7 +23,7 @@ export default function AboutPage() {
             <div className="glass-panel rounded-[32px] p-10 space-y-6">
               <h2 className="text-3xl font-bold text-[var(--text-primary)]">Our Origins</h2>
               <p className="text-white/80 leading-relaxed">
-                Zemore Indie Games began as an outsourced marketing team, helping game developers bring their creations to the attention of players worldwide. We spent years crafting compelling campaigns, building communities, and understanding what makes games truly special.
+                Zemore Indie Games started in 2020 as a marketing agency working specifically with indie developers. Helping developers bring their creations to the attention of players worldwide. We spent years crafting compelling campaigns, building communities, and understanding what makes games truly special. 
               </p>
               <p className="text-white/80 leading-relaxed">
                 Through our work, we discovered a deeper calling. We saw incredible games struggling to find their audience, talented developers facing overwhelming challenges, and amazing ideas that deserved better support. We realized we could do more than just market games—we could help them succeed from concept to launch.
