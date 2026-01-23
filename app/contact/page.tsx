@@ -48,21 +48,36 @@ export default function ContactPage() {
     setIsSubmitting(true)
     
     try {
-      // Send to Discord webhook via API route
-      const response = await fetch('/api/discord', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: `**New Contact Form Submission**\n\n**Name:** ${formData.name}\n**Email:** ${formData.email}\n**Subject:** ${formData.subject}\n**Message:**\n${formData.message}`,
-          username: 'Zemore Contact Form',
-          avatar_url: 'https://zemoregames.com/favicon.ico'
-        })
-      })
+      const messageContent = `**New Contact Form Submission**\n\n**Name:** ${formData.name}\n**Email:** ${formData.email}\n**Subject:** ${formData.subject}\n**Message:**\n${formData.message}`
       
-      if (!response.ok) {
-        throw new Error('Failed to send message')
+      // Split message into chunks if it's over 2000 characters
+      const chunks = splitMessageIntoChunks(messageContent, 2000)
+      
+      // Send each chunk sequentially
+      for (let i = 0; i < chunks.length; i++) {
+        const chunk = chunks[i]
+        const isLastChunk = i === chunks.length - 1
+        
+        const response = await fetch('/api/discord', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            content: chunk,
+            username: i === 0 ? 'Zemore Contact Form' : 'Zemore Contact Form (continued)',
+            avatar_url: 'https://zemore.games/favicon.ico'
+          })
+        })
+        
+        if (!response.ok) {
+          throw new Error(`Failed to send message chunk ${i + 1}`)
+        }
+        
+        // Add small delay between chunks to avoid rate limiting
+        if (!isLastChunk) {
+          await new Promise(resolve => setTimeout(resolve, 1000))
+        }
       }
       
       setSubmitted(true)
@@ -76,6 +91,50 @@ export default function ContactPage() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+  
+  const splitMessageIntoChunks = (message: string, maxLength: number): string[] => {
+    if (message.length <= maxLength) {
+      return [message]
+    }
+    
+    const chunks: string[] = []
+    let currentChunk = ''
+    
+    // Split by lines first to preserve formatting
+    const lines = message.split('\n')
+    
+    for (const line of lines) {
+      // If adding this line would exceed the limit
+      if (currentChunk.length + line.length + 1 > maxLength) {
+        // If current chunk is not empty, add it to chunks
+        if (currentChunk.trim()) {
+          chunks.push(currentChunk.trim())
+        }
+        
+        // If the line itself is longer than maxLength, split it
+        if (line.length > maxLength) {
+          let remainingLine = line
+          while (remainingLine.length > maxLength) {
+            chunks.push(remainingLine.substring(0, maxLength))
+            remainingLine = remainingLine.substring(maxLength)
+          }
+          currentChunk = remainingLine
+        } else {
+          currentChunk = line
+        }
+      } else {
+        // Add line to current chunk
+        currentChunk += (currentChunk ? '\n' : '') + line
+      }
+    }
+    
+    // Add the last chunk if it has content
+    if (currentChunk.trim()) {
+      chunks.push(currentChunk.trim())
+    }
+    
+    return chunks
   }
 
   const socialLinks = [
