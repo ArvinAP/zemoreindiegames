@@ -37,7 +37,7 @@ export default function ShroomwoodHero() {
         title: 'LAG KILLS',
         subtitle: 'Single-player & online co-op survival horror',
         description:
-          'Break into a house, but beware, the owner is home. Loot, hide, survive, and escape.',
+          'Desperate and out of options, you break into a house. You are not alone. Loot, hide, survive, and escape.',
         backgroundImage: '/images/lag-kills-header/lag-kills-background.png',
         headingLogo: {
           src: '/images/lag-kills-header/lag-kills-logo.png',

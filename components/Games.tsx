@@ -28,7 +28,7 @@ export default function Games() {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-[var(--text-primary)]">Our Games</h2>
           <p className="text-[var(--text-secondary)] text-lg">
-            Discover the incredible titles we've helped bring to players worldwide
+            Discover the incredible titles we're helping bring to players worldwide
           </p>
         </div>
         

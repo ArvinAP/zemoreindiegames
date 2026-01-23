@@ -16,11 +16,13 @@ export default function WhoWeAre() {
             <h2 className="text-[calc(2.5rem*1.1)] md:text-[calc(3rem*1.1)] font-bold mb-[calc(2rem*1.1)] text-[var(--text-primary)]">Who We Are</h2>
             <div className="space-y-[calc(1.5rem*1.1)] text-white/80 leading-relaxed">
               <p>
-                Zemore Indie Games began as an outsourced marketing team working closely with independent developers. Over time, we saw a common pattern: great games with strong creative vision often struggled to reach the audience they deserved. The problem was not the quality of the games, but the lack of access to the right support, visibility, and publishing opportunities.
+                Zemore Indie Games is an indie-focused game publisher built to solve a simple problem: <span className="text-[var(--accent)] font-semibold">great games don’t fail because they lack creativity, they fail because they lack reach.</span> 
               </p>
-              
               <p>
-                Driven by a deep respect for indie development, we evolved into a full-fledged publisher. Our mission is simple: <span className="text-[var(--accent)] font-semibold">to help indie games reach their full potential without compromising creative freedom</span>. Built by people who have worked alongside indie developers, Zemore exists to bridge the gap between passionate creators and the success they deserve.
+                We partner with independent developers to provide the publishing, marketing, and strategic support needed to bring strong games to market without compromising their vision. From positioning and audience growth to launch execution and long-term sales strategy, we focus on the parts of development that are hardest to do alone.
+              </p>
+              <p>
+                Our approach is collaborative, transparent, and creator-first. We don’t dictate creative direction. Zemore exists to help indie games find their audience, compete in a crowded market, and achieve sustainable success.
               </p>
             </div>
           </div>
