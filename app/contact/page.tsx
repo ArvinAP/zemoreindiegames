@@ -138,10 +138,10 @@ export default function ContactPage() {
   }
 
   const socialLinks = [
-    { icon: Facebook, label: 'Facebook', href: 'https://facebook.com' },
-    { icon: Instagram, label: 'Instagram', href: 'https://instagram.com' },
-    { icon: BlueskyIcon, label: 'Bluesky', href: 'https://bsky.app' },
-    { icon: RedditIcon, label: 'Reddit', href: 'https://reddit.com' }
+    { icon: Facebook, label: 'Facebook', href: 'https://www.facebook.com/p/Zemore-Indie-Consulting-100095691335220' },
+    { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/zemore_consulting/' },
+    { icon: BlueskyIcon, label: 'Bluesky', href: 'https://bsky.app/profile/zemoremarketing.bsky.social' },
+    { icon: RedditIcon, label: 'Reddit', href: 'https://www.reddit.com/user/Zemore_Consulting/' }
   ]
 
   return (
