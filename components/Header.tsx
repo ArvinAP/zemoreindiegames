@@ -2,9 +2,18 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 export default function Header() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const pathname = usePathname()
+
+  const isActiveLink = (href: string) => {
+    if (href === '/') {
+      return pathname === '/'
+    }
+    return pathname.startsWith(href)
+  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-dark-bg/80 backdrop-blur-md border-b border-white/5">
@@ -45,25 +54,25 @@ export default function Header() {
           </button>
 
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-sm hover:text-cyan-400 transition-colors">
+            <Link href="/" className={`text-sm transition-colors ${isActiveLink('/') ? 'text-cyan-400' : 'hover:text-cyan-400'}`}>
               Home
             </Link>
-            <Link href="/games" className="text-sm hover:text-cyan-400 transition-colors">
+            <Link href="/games" className={`text-sm transition-colors ${isActiveLink('/games') ? 'text-cyan-400' : 'hover:text-cyan-400'}`}>
               Games
             </Link>
-            <Link href="/about" className="text-sm hover:text-cyan-400 transition-colors">
+            <Link href="/about" className={`text-sm transition-colors ${isActiveLink('/about') ? 'text-cyan-400' : 'hover:text-cyan-400'}`}>
               About
             </Link>
-            <Link href="/services" className="text-sm hover:text-cyan-400 transition-colors">
+            <Link href="/services" className={`text-sm transition-colors ${isActiveLink('/services') ? 'text-cyan-400' : 'hover:text-cyan-400'}`}>
               Services
             </Link>
-            <Link href="/values" className="text-sm hover:text-cyan-400 transition-colors">
+            <Link href="/values" className={`text-sm transition-colors ${isActiveLink('/values') ? 'text-cyan-400' : 'hover:text-cyan-400'}`}>
               Values
             </Link>
-            <Link href="/contact" className="text-sm hover:text-cyan-400 transition-colors">
+            <Link href="/contact" className={`text-sm transition-colors ${isActiveLink('/contact') ? 'text-cyan-400' : 'hover:text-cyan-400'}`}>
               Contact
             </Link>
-            <Link href="/submit" className="text-sm bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] px-4 py-2 rounded-lg transition-colors">
+            <Link href="/submit" className={`text-sm bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] px-4 py-2 rounded-lg transition-colors ${isActiveLink('/submit') ? 'bg-[#00D4FF] text-[#0E1116]' : ''}`}>
               Pitch Your Game
             </Link>
           </div>
@@ -77,49 +86,49 @@ export default function Header() {
             <div className="flex flex-col">
               <Link
                 href="/"
-                className="px-4 py-3 text-sm hover:bg-white/5 transition-colors"
+                className={`px-4 py-3 text-sm transition-colors ${isActiveLink('/') ? 'bg-white/10 text-cyan-400' : 'hover:bg-white/5'}`}
                 onClick={() => setMobileNavOpen(false)}
               >
                 Home
               </Link>
               <Link
                 href="/games"
-                className="px-4 py-3 text-sm hover:bg-white/5 transition-colors"
+                className={`px-4 py-3 text-sm transition-colors ${isActiveLink('/games') ? 'bg-white/10 text-cyan-400' : 'hover:bg-white/5'}`}
                 onClick={() => setMobileNavOpen(false)}
               >
                 Games
               </Link>
               <Link
                 href="/about"
-                className="px-4 py-3 text-sm hover:bg-white/5 transition-colors"
+                className={`px-4 py-3 text-sm transition-colors ${isActiveLink('/about') ? 'bg-white/10 text-cyan-400' : 'hover:bg-white/5'}`}
                 onClick={() => setMobileNavOpen(false)}
               >
                 About
               </Link>
               <Link
                 href="/services"
-                className="px-4 py-3 text-sm hover:bg-white/5 transition-colors"
+                className={`px-4 py-3 text-sm transition-colors ${isActiveLink('/services') ? 'bg-white/10 text-cyan-400' : 'hover:bg-white/5'}`}
                 onClick={() => setMobileNavOpen(false)}
               >
                 Services
               </Link>
               <Link
                 href="/values"
-                className="px-4 py-3 text-sm hover:bg-white/5 transition-colors"
+                className={`px-4 py-3 text-sm transition-colors ${isActiveLink('/values') ? 'bg-white/10 text-cyan-400' : 'hover:bg-white/5'}`}
                 onClick={() => setMobileNavOpen(false)}
               >
                 Values
               </Link>
               <Link
                 href="/contact"
-                className="px-4 py-3 text-sm hover:bg-white/5 transition-colors"
+                className={`px-4 py-3 text-sm transition-colors ${isActiveLink('/contact') ? 'bg-white/10 text-cyan-400' : 'hover:bg-white/5'}`}
                 onClick={() => setMobileNavOpen(false)}
               >
                 Contact
               </Link>
               <Link
                 href="/submit"
-                className="px-4 py-3 text-sm bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] transition-colors"
+                className={`px-4 py-3 text-sm bg-[var(--dark-bg)] text-[var(--text-primary)] border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--dark-bg)] transition-colors ${isActiveLink('/submit') ? 'bg-[#00D4FF] text-[#0E1116]' : ''}`}
                 onClick={() => setMobileNavOpen(false)}
               >
                 Submit Game
