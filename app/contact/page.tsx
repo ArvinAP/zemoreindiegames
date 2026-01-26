@@ -266,7 +266,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-400">Email</p>
-                    <p className="text-white">contact@zemoregames.com</p>
+                    <p className="text-white">pr@zemoredesign.com</p>
                   </div>
                 </div>
               </div>
