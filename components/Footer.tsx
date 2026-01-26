@@ -41,10 +41,10 @@ const services = [
 ]
 
 const socials = [
-  { icon: Facebook, href: 'https://facebook.com' },
-  { icon: Instagram, href: 'https://instagram.com' },
-  { icon: BlueskyIcon, href: 'https://bsky.app' },
-  { icon: RedditIcon, href: 'https://reddit.com' }
+  { icon: Facebook, href: 'https://www.facebook.com/p/Zemore-Indie-Consulting-100095691335220' },
+  { icon: Instagram, href: 'https://www.instagram.com/zemore_consulting/' },
+  { icon: BlueskyIcon, href: 'https://bsky.app/profile/zemoremarketing.bsky.social' },
+  { icon: RedditIcon, href: 'https://www.reddit.com/user/Zemore_Consulting/' }
 ]
 
 export default function Footer() {
@@ -112,6 +112,9 @@ export default function Footer() {
 
         <div className="border-t border-white/5 pt-6 text-center text-white/50 text-xs">
           © {new Date().getFullYear()} Zemore Indie Games. All rights reserved.
+          <div className=" pt-2 text-center text-white/50 text-xs">
+          <a href="https://coraweb.sos.la.gov/CommercialSearch/CommercialSearchDetails.aspx?CharterID=1867496_4F5D77D57F" target="_blank" rel="noopener noreferrer">A registered LLC domiciled in Walker, Louisiana</a>
+        </div>
         </div>
       </div>
     </footer>
