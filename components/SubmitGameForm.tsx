@@ -7,6 +7,7 @@ export default function SubmitGameForm() {
     // Media URLs
     videoUrl: '',
     screenshotUrls: [''],
+    pressKitUrl: '',
     
     // Developer Information
     studioName: '',
@@ -82,7 +83,7 @@ export default function SubmitGameForm() {
     setIsSubmitting(true)
     
     try {
-      const messageContent = `**New Game Submission**\n\n**Studio Name:** ${formData.studioName}\n**Email:** ${formData.email}\n**Phone:** ${formData.phone}\n**Location:** ${formData.location}\n\n**Game Information:**\n**Title:** ${formData.gameName}\n**Genre:** ${formData.genre}\n**Development Status:** ${formData.developmentStatus}\n**Platforms:** ${formData.platforms.join(', ') || 'None selected'}\n\n**Descriptions:**\n**Short:** ${formData.shortDescription}\n**Detailed:** ${formData.detailedDescription}\n\n**Publishing Needs:** ${formData.publishingNeeds.join(', ') || 'None selected'}\n\n**Additional Info:** ${formData.additionalInfo || 'None'}\n\n**Video URL:** ${formData.videoUrl || 'Not provided'}\n**Screenshot URLs:** ${formData.screenshotUrls.filter(url => url.trim()).join(', ') || 'None provided'}\n\n**Terms Agreed:** ${formData.agreeToTerms ? 'Yes' : 'No'}`
+      const messageContent = `**New Game Submission**\n\n**Game Information:**\n**Title:** ${formData.gameName}\n**Genre:** ${formData.genre}\n**Development Status:** ${formData.developmentStatus}\n\n**Platforms:** ${formData.platforms.join(', ') || 'None selected'}\n\n**Game Description:**\n**Short:** ${formData.shortDescription}\n**Detailed:** ${formData.detailedDescription}\n\n**Developer Information:**\n**Studio Name:** ${formData.studioName}\n**Email:** ${formData.email}\n**Phone:** ${formData.phone}\n**Location:** ${formData.location}\n\n**Media URLs:**\n**Pitch Deck URL:** ${formData.pressKitUrl || 'Not provided'}\n**Video URL:** ${formData.videoUrl || 'Not provided'}\n**Screenshot URLs:** ${formData.screenshotUrls.filter(url => url.trim()).join(', ') || 'None provided'}\n\n**Publishing Needs:** ${formData.publishingNeeds.join(', ') || 'None selected'}\n\n**Additional Info:** ${formData.additionalInfo || 'None'}\n\n**Terms Agreed:** ${formData.agreeToTerms ? 'Yes' : 'No'}`
       
       // Split message into chunks if it's over 2000 characters
       const chunks = splitMessageIntoChunks(messageContent, 2000)
@@ -119,6 +120,7 @@ export default function SubmitGameForm() {
       setFormData({
         videoUrl: '',
         screenshotUrls: [''],
+        pressKitUrl: '',
         studioName: '',
         email: '',
         phone: '',
@@ -197,134 +199,6 @@ export default function SubmitGameForm() {
       )}
       
       <form onSubmit={handleSubmit} className="space-y-8">
-      {/* Media URLs */}
-      <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
-        <h2 className="text-xl font-semibold mb-4">Media URLs</h2>
-        
-        <div className="mb-6">
-          <label htmlFor="videoUrl" className="block text-sm text-gray-400 mb-2">
-            Gameplay Video URL
-          </label>
-          <input
-            type="url"
-            id="videoUrl"
-            value={formData.videoUrl}
-            onChange={(e) => setFormData(prev => ({ ...prev, videoUrl: e.target.value }))}
-            className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
-            placeholder="https://youtube.com/watch?v=..."
-          />
-          <p className="text-xs text-gray-500 mt-1">YouTube, Vimeo, or other video platform link</p>
-        </div>
-
-        <div>
-          <label className="block text-sm text-gray-400 mb-2">Screenshot URLs</label>
-          <div className="space-y-3">
-            {formData.screenshotUrls.map((url, index) => (
-              <div key={index} className="flex gap-3">
-                <input
-                  type="url"
-                  value={url}
-                  onChange={(e) => updateScreenshotUrl(index, e.target.value)}
-                  className="flex-1 bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
-                  placeholder="Enter screenshot URL"
-                />
-                {formData.screenshotUrls.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeScreenshotUrl(index)}
-                    className="px-3 py-2 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg hover:bg-red-500/30 transition-colors"
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={addScreenshotUrl}
-              className="px-4 py-2 bg-[var(--accent)]/20 text-[var(--accent)] border border-[var(--accent)]/30 rounded-lg hover:bg-[var(--accent)]/30 transition-colors"
-            >
-              Add Another Screenshot
-            </button>
-          </div>
-          <p className="text-xs text-gray-500 mt-2">Direct links to screenshots (Imgur, Dropbox, etc.)</p>
-        </div>
-      </section>
-
-      {/* Developer Information */}
-      <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
-        <h2 className="text-xl font-semibold mb-4">Developer Information</h2>
-        
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="studioName" className="block text-sm text-gray-400 mb-2">
-              Your Studio name
-            </label>
-            <input
-              type="text"
-              id="studioName"
-              value={formData.studioName}
-              onChange={(e) => setFormData(prev => ({ ...prev, studioName: e.target.value }))}
-              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
-              placeholder="Enter your studio name"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="email" className="block text-sm text-gray-400 mb-2">
-                Contact Email *
-              </label>
-              <input
-                type="email"
-                id="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
-                placeholder="you@example.com"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="phone" className="block text-sm text-gray-400 mb-2">
-                Phone
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                value={formData.phone}
-                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
-                placeholder="+1 (555) 000-0000"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="location" className="block text-sm text-gray-400 mb-2">
-              Select your Region
-            </label>
-            <select
-              id="location"
-              value={formData.location}
-              onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--accent)] transition-colors"
-            >
-              <option value="">Select a Region</option>
-              <option value="north-america">North America</option>
-              <option value="europe">Europe</option>
-              <option value="asia">Asia</option>
-              <option value="south-america">South America</option>
-              <option value="africa">Africa</option>
-              <option value="oceania">Oceania</option>
-            </select>
-          </div>
-        </div>
-      </section>
-
       {/* Game Information */}
       <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
         <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
@@ -454,6 +328,149 @@ export default function SubmitGameForm() {
         </div>
       </section>
 
+      {/* Developer Information */}
+      <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
+        <h2 className="text-xl font-semibold mb-4">Developer Information</h2>
+        
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="studioName" className="block text-sm text-gray-400 mb-2">
+              Your Studio name
+            </label>
+            <input
+              type="text"
+              id="studioName"
+              value={formData.studioName}
+              onChange={(e) => setFormData(prev => ({ ...prev, studioName: e.target.value }))}
+              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
+              placeholder="Enter your studio name"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="email" className="block text-sm text-gray-400 mb-2">
+                Contact Email *
+              </label>
+              <input
+                type="email"
+                id="email"
+                required
+                value={formData.email}
+                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
+                placeholder="you@example.com"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="phone" className="block text-sm text-gray-400 mb-2">
+                Phone
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                value={formData.phone}
+                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
+                placeholder="+1 (555) 000-0000"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="location" className="block text-sm text-gray-400 mb-2">
+              Select your Region
+            </label>
+            <select
+              id="location"
+              value={formData.location}
+              onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
+              className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--accent)] transition-colors"
+            >
+              <option value="">Select a Region</option>
+              <option value="north-america">North America</option>
+              <option value="europe">Europe</option>
+              <option value="asia">Asia</option>
+              <option value="south-america">South America</option>
+              <option value="africa">Africa</option>
+              <option value="oceania">Oceania</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      {/* Media URLs */}
+      <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
+        <h2 className="text-xl font-semibold mb-4">Media URLs</h2>
+        
+        <div className="mb-6">
+          <label htmlFor="pressKitUrl" className="block text-sm text-gray-400 mb-2">
+            Pitch Deck URL
+          </label>
+          <input
+            type="url"
+            id="pressKitUrl"
+            value={formData.pressKitUrl}
+            onChange={(e) => setFormData(prev => ({ ...prev, pressKitUrl: e.target.value }))}
+            className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
+            placeholder="https://drive.google.com/..."
+          />
+          <p className="text-xs text-gray-500 mt-1">Link to your pitch deck (Google Drive, Dropbox, etc.)</p>
+        </div>
+
+        <div className="mb-6">
+          <label htmlFor="videoUrl" className="block text-sm text-gray-400 mb-2">
+            Gameplay Video URL
+          </label>
+          <input
+            type="url"
+            id="videoUrl"
+            value={formData.videoUrl}
+            onChange={(e) => setFormData(prev => ({ ...prev, videoUrl: e.target.value }))}
+            className="w-full bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
+            placeholder="https://youtube.com/watch?v=..."
+          />
+          <p className="text-xs text-gray-500 mt-1">YouTube, Vimeo, or other video platform link</p>
+        </div>
+
+        <div>
+          <label className="block text-sm text-gray-400 mb-2">Screenshot URLs</label>
+          <div className="space-y-3">
+            {formData.screenshotUrls.map((url, index) => (
+              <div key={index} className="flex gap-3">
+                <input
+                  type="url"
+                  value={url}
+                  onChange={(e) => updateScreenshotUrl(index, e.target.value)}
+                  className="flex-1 bg-dark-bg border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] transition-colors"
+                  placeholder="Enter screenshot URL"
+                />
+                {formData.screenshotUrls.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeScreenshotUrl(index)}
+                    className="px-3 py-2 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg hover:bg-red-500/30 transition-colors"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addScreenshotUrl}
+              className="px-4 py-2 bg-[var(--accent)]/20 text-[var(--accent)] border border-[var(--accent)]/30 rounded-lg hover:bg-[var(--accent)]/30 transition-colors"
+            >
+              Add Another Screenshot
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">Direct links to screenshots (Imgur, Dropbox, etc.)</p>
+        </div>
+      </section>
+
       {/* Publishing Needs */}
       <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
         <div className="absolute inset-x-0 top-0 h-[2px] bg-[var(--accent)]/70"></div>
@@ -508,8 +525,8 @@ export default function SubmitGameForm() {
         </button>
       </div>
 
-      <p className="text-center text-sm text-gray-500">
-        We'll review your submission and get back to you within 5-7 business days
+      <p className="text-center text-sm text-gray-200">
+        We review every submission. If your project is a good fit for Zemore, we’ll be in touch.
       </p>
     </form>
     </>
