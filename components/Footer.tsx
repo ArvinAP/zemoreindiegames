@@ -111,6 +111,11 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/5 pt-6 text-center text-white/50 text-xs">
+          <div className="mb-2">
+            <Link href="/privacy" className="text-white/80 hover:text-white transition-colors font-medium text-sm">
+              Privacy Policy
+            </Link>
+          </div>
           © {new Date().getFullYear()} Zemore Indie Games. All rights reserved.
           <div className=" pt-2 text-center text-white/50 text-xs">
           <a href="https://coraweb.sos.la.gov/CommercialSearch/CommercialSearchDetails.aspx?CharterID=1867496_4F5D77D57F" target="_blank" rel="noopener noreferrer">A registered LLC domiciled in Walker, Louisiana</a>

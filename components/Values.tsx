@@ -26,7 +26,7 @@ const values = [
 export default function Values() {
   return (
     <section id="values" className="py-24 px-6 section-animate relative overflow-hidden">
-      <div className="container mx-auto max-w-6xl relative">
+      <div className="container mx-auto max-w-6xl relative scale-105 origin-top">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-[var(--text-primary)]">Our Values</h2>
           <p className="text-[var(--text-secondary)] text-lg">
@@ -34,10 +34,20 @@ export default function Values() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {values.map((value, index) => (
-            <ValueCard key={index} {...value} />
-          ))}
+        <div className="space-y-8">
+          {/* First row: 2 cards at 50% each */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {values.slice(0, 2).map((value, index) => (
+              <ValueCard key={index} {...value} />
+            ))}
+          </div>
+          
+          {/* Second row: 3 cards evenly spaced */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {values.slice(2).map((value, index) => (
+              <ValueCard key={index + 2} {...value} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
