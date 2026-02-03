@@ -29,8 +29,6 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              // TODO: Uncomment when Google Analytics Measurement ID is available
-              /*
               // Check consent before loading GA
               const consent = document.cookie
                 .split('; ')
@@ -41,17 +39,16 @@ export default function RootLayout({
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', 'G-XXXXXXXXXX', {
+                gtag('config', 'G-SNNHH80S33', {
                   anonymize_ip: true,
                 });
                 
                 // Load GA script
                 var script = document.createElement('script');
-                script.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX';
+                script.src = 'https://www.googletagmanager.com/gtag/js?id=G-SNNHH80S33';
                 script.async = true;
                 document.head.appendChild(script);
               }
-              */
             `,
           }}
         />
