@@ -85,39 +85,7 @@ export default function SubmitGameForm() {
     setSubmitError(null)
     
     try {
-      const messageContent = `**New Game Submission**\n\n**Game Information:**\n**Title:** ${formData.gameName}\n**Genre:** ${formData.genre}\n**Development Status:** ${formData.developmentStatus}\n\n**Platforms:** ${formData.platforms.join(', ') || 'None selected'}\n\n**Game Description:**\n**Short:** ${formData.shortDescription}\n**Detailed:** ${formData.detailedDescription}\n\n**Developer Information:**\n**Studio Name:** ${formData.studioName}\n**Email:** ${formData.email}\n**Phone:** ${formData.phone}\n**Location:** ${formData.location}\n\n**Media URLs:**\n**Pitch Deck URL:** ${formData.pressKitUrl || 'Not provided'}\n**Video URL:** ${formData.videoUrl || 'Not provided'}\n**Screenshot URLs:** ${formData.screenshotUrls.filter(url => url.trim()).join(', ') || 'None provided'}\n\n**Publishing Needs:** ${formData.publishingNeeds.join(', ') || 'None selected'}\n\n**Additional Info:** ${formData.additionalInfo || 'None'}\n\n**Terms Agreed:** ${formData.agreeToTerms ? 'Yes' : 'No'}`
-      
-      // Split message into chunks if it's over 2000 characters
-      const chunks = splitMessageIntoChunks(messageContent, 2000)
-      
-      // Send each chunk sequentially
-      for (let i = 0; i < chunks.length; i++) {
-        const chunk = chunks[i]
-        const isLastChunk = i === chunks.length - 1
-        
-        const response = await fetch('/api/discord', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            content: chunk,
-            username: i === 0 ? 'Zemore Game Submissions' : 'Zemore Game Submissions (continued)',
-            avatar_url: 'https://zemore.games/favicon.io'
-          })
-        })
-        
-        if (!response.ok) {
-          throw new Error(`Failed to send submission chunk ${i + 1}`)
-        }
-        
-        // Add small delay between chunks to avoid rate limiting
-        if (!isLastChunk) {
-          await new Promise(resolve => setTimeout(resolve, 1000))
-        }
-      }
-
-      const confirmResponse = await fetch('/api/forms', {
+      const response = await fetch('/api/forms', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -131,8 +99,20 @@ export default function SubmitGameForm() {
         }),
       })
 
-      if (!confirmResponse.ok) {
-        console.error('Failed to send confirmation email')
+      if (response.status === 429) {
+        setSubmitError('Too many submissions. Please wait and try again later.')
+        return
+      }
+
+      if (!response.ok) {
+        let serverMessage = ''
+        try {
+          const data = await response.json()
+          serverMessage = typeof data?.error === 'string' ? data.error : ''
+        } catch {
+          serverMessage = ''
+        }
+        throw new Error(serverMessage || 'Failed to submit game')
       }
       
       setSubmitted(true)
@@ -160,7 +140,11 @@ export default function SubmitGameForm() {
       setTimeout(() => setSubmitted(false), 5000)
     } catch (error) {
       console.error('Error sending submission:', error)
-      setSubmitError('We could not submit your game right now. Please try again in a moment.')
+      if (error instanceof Error && error.message) {
+        setSubmitError(error.message)
+      } else {
+        setSubmitError('We could not submit your game right now. Please try again in a moment.')
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -212,18 +196,6 @@ export default function SubmitGameForm() {
 
   return (
     <>
-      {submitted && (
-        <div className="mb-6 p-4 bg-[var(--accent)]/20 border border-[var(--accent)]/50 rounded-lg text-[var(--accent)] text-center">
-          Submission received. We'll review your game and get back to you within 5-7 business days. A confirmation email will be sent if provided.
-        </div>
-      )}
-
-      {submitError && (
-        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-300 text-center">
-          {submitError}
-        </div>
-      )}
-      
       <form onSubmit={handleSubmit} className="space-y-8">
       {/* Game Information */}
       <section className="glass-panel rounded-[32px] p-8 border border-white/10 relative overflow-hidden">
@@ -550,6 +522,18 @@ export default function SubmitGameForm() {
           {isSubmitting ? 'Submitting...' : 'Submit Your Game'}
         </button>
       </div>
+
+      {submitted && (
+        <div className="p-4 bg-[var(--accent)]/20 border border-[var(--accent)]/50 rounded-lg text-[var(--accent)] text-center">
+          Submission received. We'll review your game and get back to you within 5-7 business days. A confirmation email will be sent if provided.
+        </div>
+      )}
+
+      {submitError && (
+        <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-300 text-center">
+          {submitError}
+        </div>
+      )}
 
       <p className="text-center text-sm text-gray-200">
         We review every submission. If your project is a good fit for Zemore, we’ll be in touch.

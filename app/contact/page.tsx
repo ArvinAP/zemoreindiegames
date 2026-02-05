@@ -50,39 +50,7 @@ export default function ContactPage() {
     setSubmitError(null)
     
     try {
-      const messageContent = `**New Contact Form Submission**\n\n**Name:** ${formData.name}\n**Email:** ${formData.email}\n**Subject:** ${formData.subject}\n**Message:**\n${formData.message}`
-      
-      // Split message into chunks if it's over 2000 characters
-      const chunks = splitMessageIntoChunks(messageContent, 2000)
-      
-      // Send each chunk sequentially
-      for (let i = 0; i < chunks.length; i++) {
-        const chunk = chunks[i]
-        const isLastChunk = i === chunks.length - 1
-        
-        const response = await fetch('/api/discord', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            content: chunk,
-            username: i === 0 ? 'Zemore Contact Form' : 'Zemore Contact Form (continued)',
-            avatar_url: 'https://zemore.games/favicon.ico'
-          })
-        })
-        
-        if (!response.ok) {
-          throw new Error(`Failed to send message chunk ${i + 1}`)
-        }
-        
-        // Add small delay between chunks to avoid rate limiting
-        if (!isLastChunk) {
-          await new Promise(resolve => setTimeout(resolve, 1000))
-        }
-      }
-
-      const confirmResponse = await fetch('/api/forms', {
+      const response = await fetch('/api/forms', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -96,8 +64,20 @@ export default function ContactPage() {
         }),
       })
 
-      if (!confirmResponse.ok) {
-        console.error('Failed to send confirmation email')
+      if (response.status === 429) {
+        setSubmitError('Too many submissions. Please wait and try again later.')
+        return
+      }
+
+      if (!response.ok) {
+        let serverMessage = ''
+        try {
+          const data = await response.json()
+          serverMessage = typeof data?.error === 'string' ? data.error : ''
+        } catch {
+          serverMessage = ''
+        }
+        throw new Error(serverMessage || 'Failed to submit contact form')
       }
       
       setSubmitted(true)
@@ -107,7 +87,11 @@ export default function ContactPage() {
       setTimeout(() => setSubmitted(false), 5000)
     } catch (error) {
       console.error('Error sending message:', error)
-      setSubmitError('We could not send your message right now. Please try again in a moment.')
+      if (error instanceof Error && error.message) {
+        setSubmitError(error.message)
+      } else {
+        setSubmitError('We could not send your message right now. Please try again in a moment.')
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -183,18 +167,6 @@ export default function ContactPage() {
               <MessageSquare className="w-6 h-6 text-[var(--accent)]" />
               Send us a Message
             </h2>
-            
-            {submitted && (
-              <div className="mb-6 p-4 bg-[var(--accent)]/20 border border-[var(--accent)]/50 rounded-lg text-[var(--accent)]">
-                Message received. We'll get back to you within 24-48 hours. A confirmation email will be sent if provided.
-              </div>
-            )}
-
-            {submitError && (
-              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-300">
-                {submitError}
-              </div>
-            )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
@@ -273,6 +245,18 @@ export default function ContactPage() {
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
+
+              {submitted && (
+                <div className="p-4 bg-[var(--accent)]/20 border border-[var(--accent)]/50 rounded-lg text-[var(--accent)]">
+                  Message received. We'll get back to you within 24-48 hours. A confirmation email will be sent if provided.
+                </div>
+              )}
+
+              {submitError && (
+                <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-300">
+                  {submitError}
+                </div>
+              )}
             </form>
           </div>
 

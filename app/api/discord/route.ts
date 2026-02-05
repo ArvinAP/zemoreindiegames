@@ -1,7 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimit } from '../_lib/rateLimit'
 
 export async function POST(request: NextRequest) {
   try {
+    const limitResult = rateLimit(request, { limit: 3, windowMs: 60 * 60_000, prefix: 'discord' })
+    if (!limitResult.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please wait and try again.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(limitResult.retryAfterSeconds),
+          },
+        }
+      )
+    }
+
     const body = await request.json()
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL
 

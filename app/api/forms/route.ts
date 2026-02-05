@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { google } from 'googleapis'
+import { rateLimit } from '../_lib/rateLimit'
 
 type FormType = 'contact' | 'submit_game'
 
@@ -57,6 +58,95 @@ function getStringArray(value: unknown) {
 
 function getBoolean(value: unknown) {
   return typeof value === 'boolean' ? value : false
+}
+
+function splitMessageIntoChunks(message: string, maxLength: number): string[] {
+  if (message.length <= maxLength) return [message]
+
+  const chunks: string[] = []
+  let currentChunk = ''
+
+  const lines = message.split('\n')
+
+  for (const line of lines) {
+    if (currentChunk.length + line.length + 1 > maxLength) {
+      if (currentChunk.trim()) chunks.push(currentChunk.trim())
+
+      if (line.length > maxLength) {
+        let remainingLine = line
+        while (remainingLine.length > maxLength) {
+          chunks.push(remainingLine.substring(0, maxLength))
+          remainingLine = remainingLine.substring(maxLength)
+        }
+        currentChunk = remainingLine
+      } else {
+        currentChunk = line
+      }
+    } else {
+      currentChunk += (currentChunk ? '\n' : '') + line
+    }
+  }
+
+  if (currentChunk.trim()) chunks.push(currentChunk.trim())
+  return chunks
+}
+
+async function sendToDiscord(body: ConfirmRequestBody) {
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL
+  if (!webhookUrl) return
+
+  const avatarUrl = 'https://zemore.games/favicon.ico'
+
+  let content = ''
+
+  if (body.type === 'contact') {
+    content = `**New Contact Form Submission**\n\n**Name:** ${body.name ?? ''}\n**Email:** ${body.email}\n**Subject:** ${body.subject ?? ''}\n**Message:**\n${body.message ?? ''}`
+  } else {
+    const payload =
+      body.payload && typeof body.payload === 'object' && !Array.isArray(body.payload)
+        ? (body.payload as Record<string, unknown>)
+        : {}
+
+    const platforms = getStringArray(payload.platforms).join(', ') || 'None selected'
+    const screenshotUrls = getStringArray(payload.screenshotUrls).filter(u => u.trim()).join(', ') || 'None provided'
+    const publishingNeeds = getStringArray(payload.publishingNeeds).join(', ') || 'None selected'
+
+    content = `**New Game Submission**\n\n**Game Information:**\n**Title:** ${getString(payload.gameName) || body.gameName || ''}\n**Genre:** ${getString(payload.genre)}\n**Development Status:** ${getString(payload.developmentStatus)}\n\n**Platforms:** ${platforms}\n\n**Game Description:**\n**Short:** ${getString(payload.shortDescription)}\n**Detailed:** ${getString(payload.detailedDescription)}\n\n**Developer Information:**\n**Studio Name:** ${getString(payload.studioName) || body.name || ''}\n**Email:** ${body.email}\n**Phone:** ${getString(payload.phone)}\n**Location:** ${getString(payload.location)}\n\n**Media URLs:**\n**Pitch Deck URL:** ${getString(payload.pressKitUrl) || 'Not provided'}\n**Video URL:** ${getString(payload.videoUrl) || 'Not provided'}\n**Screenshot URLs:** ${screenshotUrls}\n\n**Publishing Needs:** ${publishingNeeds}\n\n**Additional Info:** ${getString(payload.additionalInfo) || 'None'}\n\n**Terms Agreed:** ${getBoolean(payload.agreeToTerms) ? 'Yes' : 'No'}`
+  }
+
+  const chunks = splitMessageIntoChunks(content, 2000)
+
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i]
+    const isLastChunk = i === chunks.length - 1
+
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: chunk,
+        username:
+          body.type === 'contact'
+            ? i === 0
+              ? 'Zemore Contact Form'
+              : 'Zemore Contact Form (continued)'
+            : i === 0
+              ? 'Zemore Game Submissions'
+              : 'Zemore Game Submissions (continued)',
+        avatar_url: avatarUrl,
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to send to Discord')
+    }
+
+    if (!isLastChunk) {
+      await new Promise(resolve => setTimeout(resolve, 1000))
+    }
+  }
 }
 
 async function appendToSheet(body: ConfirmRequestBody) {
@@ -159,6 +249,19 @@ async function appendToSheet(body: ConfirmRequestBody) {
 
 export async function POST(request: NextRequest) {
   try {
+    const limitResult = rateLimit(request, { limit: 3, windowMs: 60 * 60_000, prefix: 'forms' })
+    if (!limitResult.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please wait and try again.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(limitResult.retryAfterSeconds),
+          },
+        }
+      )
+    }
+
     const body = (await request.json()) as ConfirmRequestBody
 
     if (!body?.type || !body?.email) {
@@ -184,6 +287,12 @@ export async function POST(request: NextRequest) {
       await appendToSheet(body)
     } catch (error) {
       console.error('Google Sheets append error:', error)
+    }
+
+    try {
+      await sendToDiscord(body)
+    } catch (error) {
+      console.error('Discord webhook error:', error)
     }
 
     const resend = new Resend(resendApiKey)
