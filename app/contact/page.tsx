@@ -35,6 +35,7 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData(prev => ({
@@ -46,6 +47,7 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitError(null)
     
     try {
       const messageContent = `**New Contact Form Submission**\n\n**Name:** ${formData.name}\n**Email:** ${formData.email}\n**Subject:** ${formData.subject}\n**Message:**\n${formData.message}`
@@ -79,6 +81,24 @@ export default function ContactPage() {
           await new Promise(resolve => setTimeout(resolve, 1000))
         }
       }
+
+      const confirmResponse = await fetch('/api/forms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'contact',
+          email: formData.email,
+          name: formData.name,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      })
+
+      if (!confirmResponse.ok) {
+        console.error('Failed to send confirmation email')
+      }
       
       setSubmitted(true)
       setFormData({ name: '', email: '', subject: '', message: '' })
@@ -87,7 +107,7 @@ export default function ContactPage() {
       setTimeout(() => setSubmitted(false), 5000)
     } catch (error) {
       console.error('Error sending message:', error)
-      // You could show an error message here if needed
+      setSubmitError('We could not send your message right now. Please try again in a moment.')
     } finally {
       setIsSubmitting(false)
     }
@@ -166,7 +186,13 @@ export default function ContactPage() {
             
             {submitted && (
               <div className="mb-6 p-4 bg-[var(--accent)]/20 border border-[var(--accent)]/50 rounded-lg text-[var(--accent)]">
-                Thank you for your message! We'll get back to you within 24-48 hours.
+                Message received. We'll get back to you within 24-48 hours. A confirmation email will be sent if provided.
+              </div>
+            )}
+
+            {submitError && (
+              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-300">
+                {submitError}
               </div>
             )}
 

@@ -37,6 +37,7 @@ export default function SubmitGameForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const updateScreenshotUrl = (index: number, url: string) => {
     setFormData(prev => {
@@ -81,6 +82,7 @@ export default function SubmitGameForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitError(null)
     
     try {
       const messageContent = `**New Game Submission**\n\n**Game Information:**\n**Title:** ${formData.gameName}\n**Genre:** ${formData.genre}\n**Development Status:** ${formData.developmentStatus}\n\n**Platforms:** ${formData.platforms.join(', ') || 'None selected'}\n\n**Game Description:**\n**Short:** ${formData.shortDescription}\n**Detailed:** ${formData.detailedDescription}\n\n**Developer Information:**\n**Studio Name:** ${formData.studioName}\n**Email:** ${formData.email}\n**Phone:** ${formData.phone}\n**Location:** ${formData.location}\n\n**Media URLs:**\n**Pitch Deck URL:** ${formData.pressKitUrl || 'Not provided'}\n**Video URL:** ${formData.videoUrl || 'Not provided'}\n**Screenshot URLs:** ${formData.screenshotUrls.filter(url => url.trim()).join(', ') || 'None provided'}\n\n**Publishing Needs:** ${formData.publishingNeeds.join(', ') || 'None selected'}\n\n**Additional Info:** ${formData.additionalInfo || 'None'}\n\n**Terms Agreed:** ${formData.agreeToTerms ? 'Yes' : 'No'}`
@@ -114,6 +116,24 @@ export default function SubmitGameForm() {
           await new Promise(resolve => setTimeout(resolve, 1000))
         }
       }
+
+      const confirmResponse = await fetch('/api/forms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'submit_game',
+          email: formData.email,
+          name: formData.studioName,
+          gameName: formData.gameName,
+          payload: formData,
+        }),
+      })
+
+      if (!confirmResponse.ok) {
+        console.error('Failed to send confirmation email')
+      }
       
       setSubmitted(true)
       // Reset form
@@ -140,7 +160,7 @@ export default function SubmitGameForm() {
       setTimeout(() => setSubmitted(false), 5000)
     } catch (error) {
       console.error('Error sending submission:', error)
-      // You could show an error message here if needed
+      setSubmitError('We could not submit your game right now. Please try again in a moment.')
     } finally {
       setIsSubmitting(false)
     }
@@ -194,7 +214,13 @@ export default function SubmitGameForm() {
     <>
       {submitted && (
         <div className="mb-6 p-4 bg-[var(--accent)]/20 border border-[var(--accent)]/50 rounded-lg text-[var(--accent)] text-center">
-          Thank you for your game submission! We'll review your game and get back to you within 5-7 business days.
+          Submission received. We'll review your game and get back to you within 5-7 business days. A confirmation email will be sent if provided.
+        </div>
+      )}
+
+      {submitError && (
+        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-300 text-center">
+          {submitError}
         </div>
       )}
       
